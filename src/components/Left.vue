@@ -61,32 +61,38 @@ const listObj = reactive({
     {
       key: '3',
       value: 'ceshi3',
-      showState: true
+      showState: true,
+      listChild: []
     },
     {
       key: '4',
       value: 'ceshi4',
-      showState: true
+      showState: true,
+      listChild: []
     },
     {
       key: '5',
       value: 'ceshi5',
-      showState: true
+      showState: true,
+      listChild: []
     },
     {
       key: 6,
       value: 'ceshi6',
-      showState: true
+      showState: true,
+      listChild: []
     },
     {
       key: 7,
       value: 'ceshi7',
-      showState: true
+      showState: true,
+      listChild: []
     },
     {
       key: 8,
       value: 'ceshi8',
-      showState: true
+      showState: true,
+      listChild: []
     }
   ]
 })
