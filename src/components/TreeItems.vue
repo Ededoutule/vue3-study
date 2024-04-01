@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, nextTick, reactive, ref } from 'vue'
 
+const editObj = reactive({ edit: false, editInput: 'new tree', propsWhite: {} })
+const input = ref()
 const props = defineProps({
   model: Object
 })
-
 const emits = defineEmits(['update'])
-const marginRight = (key: string) => {
-  let length = key?.toString()?.split('-').length
-  return { 'margin-left': length * 5 + 'px' }
+const marginRight = () => {
+  return { 'margin-left': 3 * 5 + 'px' }
 }
 
 const isFolder = computed(() => {
@@ -17,31 +17,60 @@ const isFolder = computed(() => {
 
 const dbClick = (model: Object | undefined) => {
   emits('update', model)
+  editObj.edit = !editObj.edit
+  if (!props.model!.listChild) {
+    props!.model = { ...props.model, listChild: [] }
+  }
+  nextTick(() => {
+    input.value.focus()
+  })
 }
 const Click = (model: Object | undefined) => {
   props.model!.showState = !props.model!.showState
 }
-const add = () => {
-  props.model!.listChild.push({
-    key: '2-1-1',
-    value: 'ceshi2-1-1'
-  })
+const add = (model: Object | undefined) => {
+  console.log(props.model)
+  editObj.edit = !editObj.edit
+  if (props.model!.listChild) {
+    if (props.model!.listChild.length === 0) {
+      props.model!.listChild.push({
+        key: props.model!.key + '-1',
+        value: editObj.editInput,
+        showState: true,
+        listChild: []
+      })
+    } else {
+      props.model!.listChild.push({
+        key: props.model!.key + '-' + (props.model!.listChild.length + 1),
+        value: editObj.editInput,
+        showState: true,
+        listChild: []
+      })
+    }
+  } else {
+    props!.model = { ...props.model, listChild: [] }
+  }
 }
-console.log(props.model)
+
+const deleteItem = () => {
+  console.log(props!.model)
+  if (props.model!.listChild.length > 0) {
+    props.model!.listChild = []
+  } else {
+    props!.model = editObj.propsWhite
+  }
+
+  console.log(props!.model)
+}
 </script>
 
 <template>
   <div class="item">
     <!--    <TransitionGroup name="list">-->
-    <div
-      :class="{ bold: isFolder }"
-      :style="marginRight(model!.key)"
-      class="common"
-      @dblclick.stop="dbClick"
-      @click.stop="Click"
-    >
-      {{ model!.key }} - {{ model!.value }} <button v-show="isFolder" @click="add(model)">+</button
-      ><button class="delete">-</button>
+    <div :class="{ bold: isFolder }" :style="marginRight()" class="common" @click.stop.self="Click">
+      {{ model!.key }} - {{ model!.value }}
+      <button class="delete" @click.stop.self="dbClick">+</button>
+      <button class="delete" @click.stop.self="deleteItem">-</button>
 
       <TreeItems
         v-for="item in model!.listChild"
@@ -50,8 +79,9 @@ console.log(props.model)
         @update="$emit('update', $event)"
         v-show="model!.showState"
       />
-
-      <input type="text" v-show="model.edit" />
+      <div v-show="editObj.edit" class="edit">
+        <input type="text" ref="input" v-model="editObj.editInput" @blur="add" />
+      </div>
     </div>
     <!--    </TransitionGroup>-->
   </div>
@@ -69,6 +99,7 @@ console.log(props.model)
 
 .common {
   cursor: pointer;
+  display: inline-block;
 }
 
 .list-enter-active,
@@ -80,5 +111,9 @@ console.log(props.model)
 .list-leave-to {
   opacity: 0;
   transform: translateX(30px);
+}
+
+.edit {
+  margin-left: 15px;
 }
 </style>

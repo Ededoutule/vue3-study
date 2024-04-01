@@ -20,7 +20,8 @@ const listObj = reactive({
             {
               key: '1-1-1',
               value: 'ceshi1-1-1',
-              showState: true
+              showState: true,
+              listChild: []
             }
           ]
         },
@@ -32,7 +33,8 @@ const listObj = reactive({
             {
               key: '1-2-1',
               value: 'ceshi1-2-1',
-              showState: true
+              showState: true,
+              listChild: []
             }
           ]
         }
@@ -49,7 +51,8 @@ const listObj = reactive({
           listChild: [
             {
               key: '2-1-1',
-              value: 'ceshi2-1-1'
+              value: 'ceshi2-1-1',
+              listChild: []
             }
           ]
         }
@@ -96,7 +99,7 @@ watch(
 )
 
 const addItem = (item) => {
-  console.log(item)
+  // console.log(item)
   // if (item.listChild) {
   //   item.listChild.push({
   //     key: item.key + '-' + item.listChild.length + 1,
