@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, reactive, ref } from 'vue'
+import { computed, nextTick, reactive, ref, watch } from 'vue'
 
 const editObj = reactive({ edit: false, editInput: 'new tree', propsWhite: {} })
 const input = ref()
@@ -25,10 +25,10 @@ const dbClick = (model: Object | undefined) => {
     input.value.focus()
   })
 }
-const Click = (model: Object | undefined) => {
+const Click = () => {
   props.model!.showState = !props.model!.showState
 }
-const add = (model: Object | undefined) => {
+const add = () => {
   console.log(props.model)
   editObj.edit = !editObj.edit
   if (props.model!.listChild) {
@@ -53,14 +53,11 @@ const add = (model: Object | undefined) => {
 }
 
 const deleteItem = () => {
-  console.log(props!.model)
   if (props.model!.listChild.length > 0) {
     props.model!.listChild = []
   } else {
-    props!.model = editObj.propsWhite
+    emits('update', { type: 'delete', key: props.model.key })
   }
-
-  console.log(props!.model)
 }
 </script>
 

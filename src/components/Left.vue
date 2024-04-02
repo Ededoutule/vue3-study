@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { reactive, watch } from 'vue'
 import TreeItem from '@/components/TreeItems.vue'
 
@@ -104,27 +104,26 @@ watch(
   }
 )
 
-const addItem = (item) => {
-  // console.log(item)
-  // if (item.listChild) {
-  //   item.listChild.push({
-  //     key: item.key + '-' + item.listChild.length + 1,
-  //     value: item.value + '-' + item.listChild.length + 1,
-  //     showState: true,
-  //     edit: true
-  //   })
-  // } else {
-  //   item = {
-  //     ...item,
-  //     listChild: {
-  //       key: item.key + '-1',
-  //       value: item.value + '-1',
-  //       showState: true,
-  //       edit: true
-  //     }
-  //   }
-  // }
+enum FUNLIST {
+  delete = 'delete'
 }
+
+const addItem = (item) => {
+  item.key
+  if (item.type === FUNLIST.delete) {
+    if (listObj.listChild.length === 0) return
+    for (let i = 0; i < listObj.listChild; i++) {
+      if (i.key === item.key) {
+        // listObj.listChild[i] = {key: undefined, listChild: [], showState: true, value: "ceshi2"}
+      }
+    }
+    // change(item.key, )
+  }
+  console.log(listObj)
+  console.log(item)
+}
+
+const change = (key, listobj) => {}
 </script>
 <template>
   <div>
